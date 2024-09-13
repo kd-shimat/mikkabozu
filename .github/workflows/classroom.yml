@@ -1,0 +1,49 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: insert
+      id: insert
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: insert
+        setup-command: ''
+        command: make test_in_docker FILE=tests/TestDB_insert.py
+        timeout: 2
+        max-score: 1
+    - name: update
+      id: update
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: update
+        setup-command: ''
+        command: make test FILE=tests/TestDB_update.py
+        timeout: 2
+        max-score: 1
+    - name: delete
+      id: delete
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: delete
+        setup-command: ''
+        command: make test FILE=tests/TestDB_delete.py
+        timeout: 2
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        INSERT_RESULTS: "${{steps.insert.outputs.result}}"
+        UPDATE_RESULTS: "${{steps.update.outputs.result}}"
+        DELETE_RESULTS: "${{steps.delete.outputs.result}}"
+      with:
+        runners: insert,update,delete

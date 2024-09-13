@@ -1,0 +1,10 @@
+vendor
+screenshot.png
+.DS_Store
+storage/
+bootstrap/
+database/database.sqlite
+results/*
+!results/.gitkeep
+
+__pycache__

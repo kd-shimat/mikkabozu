@@ -1,0 +1,31 @@
+services:
+  web:
+    image: densukest/xampp-devenv:alpine
+    #build: build/
+    # ローカルでビルドしたい場合は、imageをコメントアウトしてbuildを有効化してください
+    # github上にコミットするときは、必ずbuildキーは無効化してください(mainにmergeする際にチェックしています)
+    #build: env
+    volumes:
+      - ./public:/var/www/html:cached
+    env_file:
+      - env.txt
+
+  db:
+    image: ghcr.io/densuke/mysql:main
+    #build: db/build
+    env_file:
+      - env.txt
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+
+volumes:
+  db_data:
+

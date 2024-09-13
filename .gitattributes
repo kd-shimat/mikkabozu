@@ -1,0 +1,12 @@
+*.sh text eol=lf
+Dockerfile text eof=lf
+*.md text eof=lf
+*.txt text eof=lf
+*.html text eof=lf
+*.css text eof=lf
+*.js text eof=lf
+*.json text eof=lf
+*.yml text eof=lf
+*.yaml text eof=lf
+*.xml text eof=lf
+*.svg text eof=lf
